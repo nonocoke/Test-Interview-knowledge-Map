@@ -1,2 +1,3 @@
 # Test-Interview-knowledge-Map
-Make it better day by day.
+
+* [功能测试](./functional-test/functional-test-cn.md)
