@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>对象 object</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 字面量声明对象，最多使用 */
+    var obj1 = {};
+    // 对象中的数据都是键值对存在
+    // 通常来说，值是函数则称为方法，其它成为属性
+    var obj2 = {
+        age: 25,
+        height: 174,
+        name: 'sss',
+        fei: function () {
+            // 在方法中的 this， 就是这个方法所在的对象
+            var s = this.age;
+            console.log(s);
+        }
+    };
+    /* 实例化方式声明 */
+    var obj3 = new Object();
+    /* 实例化自定义构造函数声明对象 */
+    function Fun() { }
+    var s = new Fun();
+
+    /* 获取对象的属性或方法 */
+    console.log(obj2.age);
+    obj2.fei();
+
+    /* this 对象 */
+    // this 永远指向一个对象
+    function f() {
+        // 普通的函数中也有 this 对象，该指向全局对象(window)
+        console.log(this);
+    }
+    f();
+    // 在什么情况下什么地方，指向哪个对象？
+    // this 运行在哪个对象下， 就指向那个对象
+    k = '678'
+    function funt() {
+        console.log(this.k);
+    }
+    var o1 = {
+        k: '123',
+        fun: funt,
+    }
+    var o2 = {
+        k: '345',
+        fun: funt,
+    }
+    o1.fun();  // 123
+    o2.fun();  // 345
+    funt();  // 678
+
+    /* 对象的遍历及删除 */
+    var objT = {
+        age: 25,
+        height: 174,
+        name: 'sss',
+        fei: function () {
+            // 在方法中的 this， 就是这个方法所在的对象
+            var s = this.age;
+            console.log(s);
+        }
+    };
+    console.log(objT)
+    // for...in
+    // for(key in obj)
+    for (var k in objT) {
+        console.log(objT[k]);
+    }
+    // 更新对象属性
+    objT.age = 30;
+    console.log(objT);
+    // 删除对象属性
+    delete objT.age;
+    console.log(objT);
+    // 增加对象属性
+    objT.age = 1;
+    console.log(objT);
+
+    /* 包装对象 */
+    // 原始类型 数值、字符串、布尔
+    // 原始类型数据在一定条件下可以自动转为对象，这就是包装对象
+    //   原始值可以自动当作对象来使用，可以调用各种属性及方法，
+    //   如果包装对象使用完毕，会立即自动销毁。
+    var str1 = '123'
+    console.log(str1.length);  // str1.length属性
+    // var num1 = new Number(12);
+
+</script>
+
+</html>

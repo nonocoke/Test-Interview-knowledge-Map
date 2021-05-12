@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 数据类型：
+    //   * 数值 number、字符串 string、布尔 boolean、undefined、null、对象 object
+    var num1 = 1.2;
+    var str1 = '123', str2 = "456";
+    var bool1 = false;
+    console.log(str1.length);
+    var s1 = 1, s2 = 2, s3 = '123'
+    // + 既可以作为数学运算也可以作为字符串拼接使用。从前往后运算，如果两个变量都是数值型，则作为加法运算；
+    // 直到遇到一个字符串，此后所有的 + 都是字符串拼接。
+    console.log(s2 + s3);  // '2123'
+    console.log(s1 + s2 + s3);  // '3123'
+    console.log(s2 + s3 + s1);  // '21231'
+
+    // undefined 表示一个声明了没有赋值的变量，变量只声明的时候值默认是 undefined
+    // null 表示一个空，变量的值如果想为 null， 必须手动设置
+    // object 一切皆为对象
+    console.log('ss', 2, null, undefined, true);
+    console.log(typeof bool1);  // boolean
+
+    // 其它类型转换为字符串
+    console.log(num1.toString());
+    console.log(String(num1));
+    console.log('' + num1);
+    console.log(typeof String(bool1));
+
+    // 其它类型转为数值型
+    console.log(Number(str1), typeof Number(str1));
+    console.log(parseInt('2'));  // 2
+    console.log(parseInt('k2'));  // NaN
+    console.log(parseFloat('1.23d'));  // 1.23  剔除后续非数字
+    console.log(parseFloat('1.2.3'));  // 1.2
+    console.log(parseFloat('1.23'));  // 1.23
+
+    // 布尔类型转换
+    // 字符串中只要有内容，转为 bool 就为 true
+    var a = Boolean('0')
+    var b = Boolean(0)
+    var c = Boolean('2')
+    var d = Boolean(null)
+    var e = Boolean(undefined)
+    console.log(a, b, c, d, e);  // true false true false flase
+
+</script>
+
+</html>

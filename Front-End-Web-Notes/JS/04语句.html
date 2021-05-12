@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 流程分支 
+    *   if
+    *   switch-case
+    *   while
+    *   do-while
+    *   for
+    *   continue、break
+    */
+    // 分支结构> if 语句
+    var a = 1, b = 1;
+    if (a > b) {
+        console.log("a > b");
+    } else if (a = b) {
+        console.log("a = b");
+    } else {
+        console.log("a < b");
+    }
+    // 分支结构> switch-case
+    var str1 = "A"
+    switch (str1) {
+        case "A":
+            console.log("90-100");
+            break;
+        case "B":
+            console.log("80-90");
+            break
+        default:
+            console.log("60-100");
+            break;
+    }
+
+    // 循环结构> while
+    var i = 0;
+    while (i < 10) {
+        if (i % 3== 0) {
+            i++;
+            continue;
+        }
+        console.log(i);
+        i++;
+    }
+    console.log(i)
+    // 循环结构> do-while
+    var i = 10;
+    do {
+        console.log(i);
+    } while (i > 10);
+    // 循环结构> for
+    for (var i = 0; i < 10; i++) {
+        console.log(i)
+    }
+    // 打印三角形
+    var s = ''
+    for (var i = 0; i < 10; i++) {
+        for (var h = i; h < 10; h++) {
+            s += '* '
+        }
+        s += '\n'
+    }
+    console.log(s)
+    // 打印 9*9 乘法表
+    var s = ''
+    for (var i = 1; i < 10; i++) {
+        for (var h = i; h < 10; h++) {
+            s += String(i) + ' * ' + String(h) + ' = '
+            s += String(i * h) + '\t'
+        }
+        s += '\n'
+    }
+    console.log(s)
+
+</script>
+
+</html>

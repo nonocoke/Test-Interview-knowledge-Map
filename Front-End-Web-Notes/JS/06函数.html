@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>函数 function</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 函数 function
+        * 关键字声明
+        function(){code;return;}
+        * 表达式声明(匿名函数)
+        var f = function(){code;return;}
+    */
+    /* 全局变量和局部变量 
+        变量提升： 在代码执行之前，变量已经在编译阶段被声明了。
+        JS 代码运行的两个阶段：
+        1. 解析（编译）阶段：语法检查、变量及函数进行声明
+        2. 运行阶段： 变量的赋值、代码流程的执行
+    */
+    // 如果函数与变量同名，那么函数声明将替换变量声明。
+
+    // k 为形参， 50为实参
+    function f(k) {
+        var n = 0;
+        for (var i = 0; i < k; i++) {
+            n += i
+        }
+        console.log(n)
+    }
+    f(50);
+    // 如果没有 return， 函数返回的就是 undefined。
+    // 如果函数有return， 但return后无值，返回的也是 undefined
+    function sum(a, b) {
+        var c = a + b;
+        return c;
+    }
+    sum1 = sum(1, 2);
+    console.log(sum1);
+
+    /* 匿名函数 */
+    var f = function () { code; return; }
+    console.log(typeof f);
+    /* 自调用匿名函数 */
+    (function () {
+        alert(123);
+    })();
+
+    /* 函数也是一种数据类型  -> 对象 */
+    // 函数作为行参1  --> 回调
+    function f1(s) {
+        s();
+    }
+    var f2 = function () {
+        console.log(2);
+    }
+    f1(f2);
+    // 函数作为行参2  --> 闭包
+    function f3() {
+        function f4() {
+            alert(2);
+        }
+        return f4;
+    }
+
+    var k = f3();
+    k();
+
+    // 作用域与作用域链
+    var a = 3;
+    function f1() {
+        // var a = 6;
+        function f2() {
+            // var a = 5;
+            function f3() {
+                // var a = 4;
+                // 作用域链: 
+                // 当函数中使用某个变量时，优先在自己的作用域里找，
+                // 如果找不到，就会向上一级作用域找，
+                // 如果找不到，继续向上一层寻找，直到全局作用域。
+                // 如果还找不到，直接报错
+                console.log(a)
+            }
+            f3();
+        }
+        f2();
+    }
+    f1();
+</script>
+
+</html>
