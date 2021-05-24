@@ -2,6 +2,7 @@
 #!/usr/bin/python3
 import array
 import enum
+from hashlib import new
 
 
 # enum 模块定义了一个具备可迭代性和可比较性的枚举类型。
@@ -92,3 +93,59 @@ print('random :', data)
 heapq.heapify(data)
 print('heapified :')
 show_tree(data)
+
+# 当堆中元素排序好之后，
+# 使用 heappop() 方法可以移除值最小的元素
+for i in range(2):
+    smallest = heapq.heappop(data)
+    print('pop    {:>3}:'.format(smallest))
+    show_tree(data)
+
+# 移除堆中存在的元素并替换为其他元素，
+# 可以使用方法 heapreplace() 实现
+data = [19, 9, 4, 10, 11]
+heapq.heapify(data)
+show_tree(data)
+# 原地替换元素并且维持指定大小的堆结构，可以用于实现例如优先队列这样的数据结构
+for n in [0, 13]:
+    smallest = heapq.heapreplace(data, n)
+    print('replace {:>2} with {:>2}:'.format(smallest, n))
+    show_tree(data)
+
+# heapq 还包含两个用于检查可迭代对象并找到它所包含的最大或最小值范围的函数
+# nlargest() 和 nsmallest() 这两个函数只对当 n > 1 并且 n 较小的时候表现出很高的效率，
+# 但是在少数情况下仍然可以派上用场
+data = [19, 9, 4, 10, 11]
+print('all :', data)
+print('3 largest :', heapq.nlargest(3, data))
+print('from sort :', list(reversed(sorted(data)[-3:])))
+print('3 smallest :', heapq.nsmallest(3, data))
+print('from sort  :', sorted(data)[:3])
+
+# 高效合并两个已排序的列表
+# 1. 对于小数据集来说，将几个已排序列表组合成一个新列表是很容易的
+import itertools
+a = [33, 58, 71, 88, 95]
+b = [10, 11, 17, 38, 91]
+print(list(sorted(itertools.chain(a, b))))  # [10, 11, 17, 33, 38, 58, 71, 88, 91, 95]
+print()
+# 2. 对于大数据集，上述方法会使用大量的内存
+# merge() 使用堆去一次生成一个新的列表 ，
+# 可以使用固定数量的内存来确定下一个元素，而不是对合并之后的列表进行整体排序
+import random
+random.seed(2021)
+data = []
+for i in range(4):
+    new_data = list(random.sample(range(1, 101), 5))
+    new_data.sort()
+    data.append(new_data)
+
+print(data)
+for i, d in enumerate(data):
+    print('{}: {}'.format(i, d))
+print('\nMerged: ')
+# 因为 merge() 方法使用堆来实现，
+# 它是根据被合并的列表的数量而不是列表中的元素数量来消耗内存的
+for i in heapq.merge(*data):
+    print(i, end=' ')
+print()
