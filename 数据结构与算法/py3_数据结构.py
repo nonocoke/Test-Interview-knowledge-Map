@@ -1,5 +1,15 @@
 # coding:utf8
 #!/usr/bin/python3
+import threading
+import queue
+import functools
+import copy
+import bisect
+import random
+import itertools
+from io import StringIO
+import heapq
+import math
 import array
 import enum
 from hashlib import new
@@ -51,9 +61,7 @@ print(list(enumerate(a)))  # 迭代
 
 # 一个最大堆保证了父节点的值大于或等于子节点的值。一个最小堆则是父节点的值要小于等于子节点的值
 # Python 的 heapq 模块使用的是最小堆
-import math
-import heapq
-from io import StringIO
+
 
 def show_tree(tree, total_width=36, file=' '):
     """ 格式化打印一颗树"""
@@ -73,6 +81,7 @@ def show_tree(tree, total_width=36, file=' '):
     print(output.getvalue())
     print('-' * total_width)
     print()
+
 
 heap = []
 data = [19, 9, 4, 10, 11]
@@ -124,15 +133,14 @@ print('from sort  :', sorted(data)[:3])
 
 # 高效合并两个已排序的列表
 # 1. 对于小数据集来说，将几个已排序列表组合成一个新列表是很容易的
-import itertools
 a = [33, 58, 71, 88, 95]
 b = [10, 11, 17, 38, 91]
-print(list(sorted(itertools.chain(a, b))))  # [10, 11, 17, 33, 38, 58, 71, 88, 91, 95]
+# [10, 11, 17, 33, 38, 58, 71, 88, 91, 95]
+print(list(sorted(itertools.chain(a, b))))
 print()
 # 2. 对于大数据集，上述方法会使用大量的内存
 # merge() 使用堆去一次生成一个新的列表 ，
 # 可以使用固定数量的内存来确定下一个元素，而不是对合并之后的列表进行整体排序
-import random
 random.seed(2021)
 data = []
 for i in range(4):
@@ -153,7 +161,6 @@ print()
 # bisect 维护有序列表
 # bisect 模块里实现了一个向列表插入元素时也会顺便排序的算法
 # 二分查找出插入位置，然后插入
-import bisect
 a = [1, 4, 6, 8, 12, 15, 20]
 position = bisect.bisect(a, 13)
 print(position)
@@ -178,8 +185,7 @@ print(a)
 
 # copy 对象复制
 # 浅复制 是用 copy() 来创建的一个填充了对原始对象引用的新容器
-import copy
-import functools
+
 
 @functools.total_ordering
 class MyClass:
@@ -192,6 +198,7 @@ class MyClass:
 
     def __gt__(self, other):
         return self.name > other.name
+
 
 a = MyClass('a')
 my_list = [a]
@@ -218,3 +225,70 @@ print('dup[0] == my_list[0]:', (dup[0] == my_list[0]))
 
 
 # queue - 线程安全的 FIFO 队列
+print('\n> queue')
+# Queue 类实现了一个基本的先进先出的容器。
+# 使用 put() 将元素添加到序列的一端，并适用 get() 从另一端移除
+fifo_q = queue.Queue()
+for i in range(5):
+    fifo_q.put(i)
+print(fifo_q)
+while not fifo_q.empty():
+    print(fifo_q.get(), end=' ')
+print()
+
+# LifoQueue 后进先出的模式（与普通的栈结构类似）
+lifo_q = queue.LifoQueue()
+for i in range(5):
+    lifo_q.put(i)
+print(lifo_q)
+while not lifo_q.empty():
+    print(lifo_q.get(), end=' ')
+print()
+
+# Priority Queue
+
+@functools.total_ordering
+class Job:
+
+    def __init__(self, priority, description):
+        self.priority = priority
+        self.description = description
+        print('New job:', description)
+        return
+
+    def __eq__(self, other):
+        try:
+            return self.priority == other.priority
+        except AttributeError:
+            return NotImplemented
+
+    def __lt__(self, other):
+        try:
+            return self.priority < other.priority
+        except AttributeError:
+            return NotImplemented
+
+
+q = queue.PriorityQueue()
+
+q.put(Job(3, 'Mid-level job'))
+q.put(Job(10, 'Low-level job'))
+q.put(Job(1, 'Important job'))
+
+
+def process_job(q):
+    while True:
+        next_job = q.get()
+        print('Processing job:', next_job.description)
+        q.task_done()
+
+
+workers = [
+    threading.Thread(target=process_job, args=(q,)),
+    threading.Thread(target=process_job, args=(q,)),
+]
+for w in workers:
+    w.setDaemon(True)
+    w.start()
+
+q.join()
