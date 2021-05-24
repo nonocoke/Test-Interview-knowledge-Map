@@ -174,3 +174,47 @@ a = [1, 4, 6, 8, 12, 15, 20]
 bisect.insort(a, 13)
 bisect.insort_left(a, 13)
 print(a)
+
+
+# copy 对象复制
+# 浅复制 是用 copy() 来创建的一个填充了对原始对象引用的新容器
+import copy
+import functools
+
+@functools.total_ordering
+class MyClass:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __gt__(self, other):
+        return self.name > other.name
+
+a = MyClass('a')
+my_list = [a]
+dup = copy.copy(my_list)
+
+print('             my_list:', my_list)
+print('                 dup:', dup)
+print('      dup is my_list:', (dup is my_list))
+print('      dup == my_list:', (dup == my_list))
+print('dup[0] is my_list[0]:', (dup[0] is my_list[0]))
+print('dup[0] == my_list[0]:', (dup[0] == my_list[0]))
+
+# 由 deepcopy() 创建的 深拷贝 是一个新的容器， 容器里面填充了原始对象内容的副本
+# 为了创建一个 list 的深拷贝，会先创建一个新的 list 对象， 复制原序列里面的元素，然后将这些副本添加到新的序列当中
+a = MyClass('a')
+my_list = [a]
+dup = copy.deepcopy(my_list)
+print('             my_list:', my_list)
+print('                 dup:', dup)
+print('      dup is my_list:', (dup is my_list))
+print('      dup == my_list:', (dup == my_list))
+print('dup[0] is my_list[0]:', (dup[0] is my_list[0]))
+print('dup[0] == my_list[0]:', (dup[0] == my_list[0]))
+
+
+# queue - 线程安全的 FIFO 队列
