@@ -149,3 +149,28 @@ print('\nMerged: ')
 for i in heapq.merge(*data):
     print(i, end=' ')
 print()
+
+# bisect 维护有序列表
+# bisect 模块里实现了一个向列表插入元素时也会顺便排序的算法
+# 二分查找出插入位置，然后插入
+import bisect
+a = [1, 4, 6, 8, 12, 15, 20]
+position = bisect.bisect(a, 13)
+print(position)
+# 用可变序列内置的 insert 方法插入
+a.insert(position, 13)
+print(a)
+
+# 使用 bisect.insort(), 比 bisect 先查找插入位置，再用 insert 方法插入更快速
+a = [1, 4, 6, 8, 12, 15, 20]
+bisect.insort(a, 13)
+print(a)
+
+# 对重复的数据的处理
+# 可以选择将新值插到旧值的左边，也可以插到右边
+# insort() 函数实际上是 insort_right() 函数, 将新值插到旧值的右边
+# insort_left() 将值插到旧值的左边
+a = [1, 4, 6, 8, 12, 15, 20]
+bisect.insort(a, 13)
+bisect.insort_left(a, 13)
+print(a)
