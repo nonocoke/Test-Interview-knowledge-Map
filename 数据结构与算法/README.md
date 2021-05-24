@@ -1,6 +1,13 @@
 # 链表
 # 数组
 
+# 常见算法 50
+
+* 
+
+
+
+
 * [快速排序及优化](./quickSort.py)
 * [快速选择算法](./quickSelect.py)
 * [堆排序](./headSort.py)
