@@ -130,7 +130,7 @@ class SinglyLinkedList:
         print("\n", flush=True)
 
 
-if __name__ == "__main__":
+def test_single_linked_list():
     l = SinglyLinkedList()
     for i in range(15):
         l.insert_value_to_head(i)
@@ -146,3 +146,8 @@ if __name__ == "__main__":
     l.print_all()
     l.delete_by_value(12)
     print(l)
+
+
+if __name__ == "__main__":
+    test_single_linked_list()
+
