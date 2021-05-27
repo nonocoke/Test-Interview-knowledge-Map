@@ -1,10 +1,10 @@
 
 """
-    1 Reverse singly-linked list
-    2 Detect cycle in a list
-    3 Merge two sorted lists
-    4 Remove nth node from the end
-    5 Find middle node
+    1 Merge two sorted lists
+    2 Find middle node
+    3 Remove nth node from the end
+    4 Detect cycle in a list
+    5 Reverse singly-linked list
 """
 from typing import Optional
 
