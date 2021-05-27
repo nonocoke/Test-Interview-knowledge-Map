@@ -1,14 +1,17 @@
 
 """
+    原地排序 O(1) | 时间复杂度 O(n^2)
     Bubble sort, insertion sort and selection sort
-    冒泡排序、插入排序、选择排序
+    (冒泡排序、插入排序)(稳定) 、选择排序(不稳定)
+    
+
 """
 
 from typing import List
+import itertools
+
 
 # Bubble sort
-
-
 def bubble_sort(a: List[int]):
     length = len(a)
     if length <= 1:
@@ -52,6 +55,29 @@ def select_sort(a: List[int]):
                 min_val = a[j]
                 min_index = j
         a[i], a[min_index] = a[min_index], a[i]
+
+
+# 计数排序
+def counting_sort(a: List[int]):
+    length = len(a)
+    if length <= 1:
+        return
+    
+    # a中有counts[i]个数不大于i
+    counts = [0] * (max(a) + 1)
+    for num in a:
+        counts[num] += 1
+    counts = list(itertools.accumulate(counts))
+    print(counts)
+    
+    # 临时数组，储存排序之后的结果
+    a_sorted = [0] * len(a)
+    for num in reversed(a):
+        index = counts[num] - 1
+        a_sorted[index] = num
+        counts[num] -= 1
+
+    a[:] = a_sorted
 
 
 def test_bubble_sort():
@@ -102,3 +128,7 @@ if __name__ == "__main__":
     array = [5, 6, -1, 4, 2, 8, 10, 7, 6]
     select_sort(array)
     print(array)
+
+    a3 = [4, 5, 0, 9, 3, 3, 1, 9, 8, 7]
+    counting_sort(a3)
+    print(a3)
