@@ -141,10 +141,10 @@ def quick_sort_2(a: List[int]):
     if a is None or len(a) < 1:
         return a
 
-    def swap(a, low, upper):
+    def swap(a: List[int], low: int, upper: int):
         a[low], a[upper] = a[upper], a[low]
 
-    def QuickSort_TwoWay(a, low, upper):
+    def QuickSort_TwoWay(a: List[int], low: int, upper: int):
         # 小数组排序i可以用插入或选择排序
         #       n = 1000000 数据分析后，u - l = 50 左右
         #       if upper-low < 50 : return insert_sort(a)
