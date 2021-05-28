@@ -83,42 +83,43 @@ def counting_sort(a: List[int]):
 
 
 # 快速排序
-# 时间 O(nlog n)  |  空间 O(log n)
-#        递推公式
-# quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)
-#        终止条件
-# p >= r
-#        伪代码
-# // 快速排序，A是数组，n表示数组的大小
-# quick_sort(A, n) {
-#   quick_sort_c(A, 0, n-1)
-# }
-# // 快速排序递归函数，p,r为下标
-# quick_sort_c(A, p, r) {
-#   if p >= r then return
+"""
+    时间 O(nlog n)  |  空间 O(log n)
+        递推公式
+    quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)
+        终止条件
+    p >= r
+        伪代码
+    // 快速排序，A是数组，n表示数组的大小
+    quick_sort(A, n) {
+    quick_sort_c(A, 0, n-1)
+    }
+    // 快速排序递归函数，p,r为下标
+    quick_sort_c(A, p, r) {
+    if p >= r then return
 
-#   q = partition(A, p, r) // 获取分区点
-#   quick_sort_c(A, p, q-1)
-#   quick_sort_c(A, q+1, r)
-# }
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    q = partition(A, p, r) // 获取分区点
+    quick_sort_c(A, p, q-1)
+    quick_sort_c(A, q+1, r)
+    }
+"""
 
 def quick_sort(a: List[int]):
-    return recur_quick_sort(a,  0, len(a) - 1)
+    return _recur_quick_sort(a,  0, len(a) - 1)
 
 
-def recur_quick_sort(a: List[int], low: int, high: int):
+def _recur_quick_sort(a: List[int], low: int, high: int):
     if low >= high:
         return
     # get a random position as the pivot
     k = random.randint(low, high)
     a[low], a[k] = a[k], a[low]
-    m = partition(a, low, high)  # a[m] is in final position
-    recur_quick_sort(a, low, m - 1)
-    recur_quick_sort(a, m + 1, high)
+    m = _partition(a, low, high)  # a[m] is in final position
+    _recur_quick_sort(a, low, m - 1)
+    _recur_quick_sort(a, m + 1, high)
 
 
-def partition(a: List[int], low: int, high: int):
+def _partition(a: List[int], low: int, high: int):
     pivot = a[low]
     j = low
     for i in range(low + 1, high + 1):
@@ -183,7 +184,60 @@ def quick_sort_2(a: List[int]):
 
     return QuickSort_TwoWay(a, 0, len(a) - 1)
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# 归并排序
+"""
+    递推公式
+    merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
+    终止条件
+    p >= r 不用再继续分解
+
+    归并排序算法伪代码
+    A是数组，n表示数组大小
+    merge_sort(A, n) {
+    merge_sort_c(A, 0, n-1)
+    }
+    // 递归调用函数
+    merge_sort_c(A, p, r) {
+    // 递归终止条件
+    if p >= r  then return
+    // 取p到r之间的中间位置q
+    q = (p+r) / 2
+    // 分治递归
+    merge_sort_c(A, p, q)
+    merge_sort_c(A, q+1, r)
+    // 将A[p...q]和A[q+1...r]合并为A[p...r]
+    merge(A[p...r], A[p...q], A[q+1...r])
+    }
+"""
+
+def merge_sort(a: List[int]):
+    _recur_merge_sort(a, 0, len(a) - 1)
+
+def _recur_merge_sort(a: List[int], low: int, high: int):
+    if low >= high: return
+    mid = low + (high -low) // 2
+    _recur_merge_sort(a, low, mid)
+    _recur_merge_sort(a, mid + 1, high)
+    _merge(a, low, mid, high)
+
+def _merge(a: List[int], low: int, mid: int, high: int):
+    # 转化问题为::合并特殊的两个有序数组
+    # a[low:mid], a[mid+1, high] are sorted.
+    i, j = low, mid + 1
+    tmp = []
+    while i <= mid and j <= high:
+        if a[i] <= a[j]:
+            tmp.append(a[i])
+            i += 1
+        else:
+            tmp.append(a[j])
+            j += 1
+
+    start = i if i <= mid else j
+    end = mid if i <= mid else high
+    tmp.extend(a[start:end + 1])
+    a[low:high + 1] = tmp
 
 
 def test_bubble_sort():
@@ -257,4 +311,8 @@ if __name__ == "__main__":
 
     array = [5, 6, -1, 4, 2, 8, 10, 7, 6]
     quick_sort_2(array)
+    print(array)
+
+    array = [5, 6, -1, 4, 2, 8, 10, 7, 6]
+    merge_sort(array)
     print(array)
