@@ -44,6 +44,7 @@ def insert_sort(a: List[int]):
         a[j + 1] = val
 
 
+# 每次都选择一个最小的元素放在 i 位置上
 def select_sort(a: List[int]):
     length = len(a)
     if length <= 1:
@@ -129,7 +130,6 @@ def partition(a: List[int], low: int, high: int):
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # From 编程珠玑2
-
 
 def quick_sort_2(a: List[int]):
     """ 
