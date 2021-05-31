@@ -18,6 +18,22 @@
 14. [求平均值](#14)
 15. [去掉所有包含span的句子](#15)
 
+## 常用bash
+
+[sed](#sed)
+[awk](#awk)
+[cut](#cut)
+[sort](#sort)
+[uniq](#uniq)
+[grep](#grep)
+[tr](#tr)
+[wc](#wc)
+[netstat](#netstat)
+[free](#free)
+[ps](#ps)
+[top](#top)
+[curl](#curl)
+
 ### <span id = "1">1. 获取文件行数</span>
 
 ```bash
@@ -263,3 +279,363 @@ awk '!/[bB]/'
 ```
 
 9\10
+
+### <span id = "sed">sed</span>
+
+```bash
+Edit text in a scriptable manner.
+
+- Replace the first occurrence of a string in a file, and print the result:
+    sed 's/find/replace/' filename
+
+- Replace all occurrences of an extended regular expression in a file:
+    sed -E 's/regex/replace/g' filename
+
+- Replace all occurrences of a string in a file, overwriting the file (i.e. in-place):
+    sed --in-place='' 's/find/replace/g' filename
+
+- Replace only on lines matching the line pattern:
+    sed '/line_pattern/s/find/replace/' filename
+
+- Print only text between n-th line till the next empty line:
+    sed -n 'line_number,/^$/p' filename
+
+- Apply multiple find-replace expressions to a file:
+    sed -e 's/find/replace/' -e 's/find/replace/' filename
+
+- Replace separator / by any other character not used in the find or replace patterns, e.g., #:
+    sed 's#find#replace#' filename
+```
+
+### <span id = "awk">awk</span>
+
+```bash
+A versatile programming language for working on files.
+More information: <https://github.com/onetrueawk/awk>.
+
+- Print the fifth column (a.k.a. field) in a space-separated file:
+    awk '{print $5}' filename
+
+- Print the second column of the lines containing "something" in a space-separated file:
+    awk '/something/ {print $2}' filename
+
+- Print the last column of each line in a file, using a comma (instead of space) as a field separator:
+    awk -F ',' '{print $NF}' filename
+
+- Sum the values in the first column of a file and print the total:
+    awk '{s+=$1} END {print s}' filename
+
+- Sum the values in the first column and pretty-print the values and then the total:
+    awk '{s+=$1; print $1} END {print "--------"; print s}' filename
+
+- Print every third line starting from the first line:
+    awk 'NR%3==1' filename
+
+- Print all values starting from the third column:
+    awk '{for (i=3; i <= NF; i++) printf $i""FS; print""}' filename
+
+- Print different values based on conditions:
+    awk '{if ($1 == "foo") print "Exact match foo"; else if ($1 ~ "bar") print "Partial match bar"; else print "Baz"}' filename
+```
+
+### <span id = "cut">cut</span>
+
+```bash
+Cut out fields from `stdin` or files.
+
+- Cut out the first sixteen characters of each line of `stdin`:
+    cut -c 1-16
+
+- Cut out the first sixteen characters of each line of the given files:
+    cut -c 1-16 file
+
+- Cut out everything from the 3rd character to the end of each line:
+    cut -c 3-
+
+- Cut out the fifth field of each line, using a colon as a field delimiter (default delimiter is tab):
+    cut -d':' -f5
+
+- Cut out the 2nd and 10th fields of each line, using a semicolon as a delimiter:
+    cut -d';' -f2,10
+
+- Cut out the fields 3 through to the end of each line, using a space as a delimiter:
+    cut -d' ' -f3-
+```
+
+### <span id = "sort">sort</span>
+
+```bash
+Sort lines of text files.
+More information: <https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html>.
+
+- Sort a file in ascending order:
+    sort path/to/file
+
+- Sort a file in descending order:
+    sort -r path/to/file
+
+- Sort a file in case-insensitive way:
+    sort --ignore-case path/to/file
+
+- Sort a file using numeric rather than alphabetic order:
+    sort -n path/to/file
+
+- Sort the passwd file by the 3rd field, numerically:
+    sort -t: -k 3n /etc/passwd
+
+- Sort a file preserving only unique lines:
+    sort -u path/to/file
+
+- Sort human-readable numbers (in this case the 5th field of `ls -lh`):
+    ls -lh | sort -h -k 5
+
+- Sort numbers with exponents:
+    sort --general-numeric-sort path/to/file
+```
+
+### <span id = "uniq">uniq</span>
+
+```bash
+Output the unique lines from the given input or file.
+Since it does not detect repeated lines unless they are adjacent, we need to sort them first.
+
+- Display each line once:
+    sort file | uniq
+
+- Display only unique lines:
+    sort file | uniq -u
+
+- Display only duplicate lines:
+    sort file | uniq -d
+
+- Display number of occurrences of each line along with that line:
+    sort file | uniq -c
+
+- Display number of occurrences of each line, sorted by the most frequent:
+    sort file | uniq -c | sort -nr
+```
+
+### <span id = "grep">grep</span>
+
+```bash
+Matches patterns in input text.
+Supports simple patterns and regular expressions.
+
+- Search for a pattern within a file:
+    grep search_pattern path/to/file
+
+- Search for an exact string:
+    grep -F exact_string path/to/file
+
+- Search for a pattern [R]ecursively in the current directory, showing matching line [n]umbers, [I]gnoring non-text files:
+    grep -RIn search_pattern .
+
+- Use extended regular expressions (supporting `?`, `+`, `{}`, `()` and `|`), in case-insensitive mode:
+    grep -Ei search_pattern path/to/file
+
+- Print 3 lines of [C]ontext around, [B]efore, or [A]fter each match:
+    grep -C|B|A 3 search_pattern path/to/file
+
+- Print file name with the corresponding line number for each match:
+    grep -Hn search_pattern path/to/file
+
+- Use the standard input instead of a file:
+    cat path/to/file | grep search_pattern
+
+- Invert match for excluding specific strings:
+    grep -v search_pattern
+```
+
+### <span id = "tr">tr</span>
+
+```bash
+Translate characters: run replacements based on single characters and character sets.
+
+- Replace all occurrences of a character in a file, and print the result:
+    tr find_character replace_character < filename
+
+- Replace all occurrences of a character from another command's output:
+    echo text | tr find_character replace_character
+
+- Map each character of the first set to the corresponding character of the second set:
+    tr 'abcd' 'jkmn' < filename
+
+- Delete all occurrences of the specified set of characters from the input:
+    tr -d 'input_characters' < filename
+
+- Compress a series of identical characters to a single character:
+    tr -s 'input_characters' < filename
+
+- Translate the contents of a file to upper-case:
+    tr "[:lower:]" "[:upper:]" < filename
+
+- Strip out non-printable characters from a file:
+    tr -cd "[:print:]" < filename
+```
+
+### <span id = "wc">wc</span>
+
+```bash
+Count lines, words, or bytes.
+
+- Count lines in file:
+    wc -l file
+
+- Count words in file:
+    wc -w file
+
+- Count characters (bytes) in file:
+    wc -c file
+
+- Count characters in file (taking multi-byte character sets into account):
+    wc -m file
+
+- Use standard input to count lines, words and characters (bytes) in that order:
+    find . | wc
+```
+
+### <span id = "netstat">netstat</span>
+
+```bash
+Displays network-related information such as open connections, open socket ports, etc.
+
+- List all ports:
+    netstat -a
+
+e.g
+netstat -a
+Active Internet connections (including servers)
+Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)
+tcp4       0      0  172.21.194.30.53645    114.55.207.244.https   ESTABLISHED
+
+- List all listening ports:
+    netstat -l
+
+- List listening TCP ports:
+    netstat -t
+
+- Display PID and program names for a specific protocol:
+    netstat -p protocol
+
+- Print the routing table:
+    netstat -nr
+```
+
+### <span id = "free">free</span>
+
+```bash
+Display amount of free and used memory in the system
+
+free [-b | -k | -m] [-o] [-s delay ] [-t] [-l] [-V]
+
+The -b switch displays the amount of memory in bytes; the -k switch (set
+by default) displays it in kilobytes;  the  -m  switch  displays  it  in
+megabytes.
+
+The -t switch displays a line containing the totals.
+
+The  -o switch disables the display of a "buffer adjusted" line.  If the
+-o option is not specified, free subtracts buffer memory from  the  used
+memory and adds it to the free memory reported.
+
+The  -s switch activates continuous polling delay seconds apart. You may
+actually specify any floating point number for delay, usleep(3) is  used
+for microsecond resolution delay times.
+
+The -l switch shows detailed low and high memory statistics.
+
+The -V switch displays version information.
+```
+
+### <span id = "ps">ps</span>
+
+```bash
+Information about running processes.
+
+- List all running processes:
+    ps aux
+
+e.g
+USER PID %CPU %MEM VSZ RSS TT STAT STARTED TIME COMMAND
+
+- List all running processes including the full command string:
+    ps auxww
+
+- Search for a process that matches a string:
+    ps aux | grep string
+
+- List all processes of the current user in extra full format:
+    ps --user $(id -u) -F
+
+- List all processes of the current user as a tree:
+    ps --user $(id -u) f
+
+- Get the parent pid of a process:
+    ps -o ppid= -p pid
+
+- Sort processes by memory consumption:
+    ps --sort size
+```
+
+### <span id = "top">top</span>
+
+```bash
+Display dynamic real-time information about running processes.
+
+- Start top, all options are available in the interface:
+    top
+e.g.
+Processes: xx total, 3 running, xx sleeping, xx threads                                                       
+Load Avg: 2.28, 2.30, 2.14  CPU usage: 11.79% user, 7.5% sys, 81.15% idle
+SharedLibs: xxM resident, 39M data, 29M linkedit. MemRegions: xx total, xxM resident, 64M private, xxM shared.
+PhysMem: xxM used (xxM wired), 68M unused.
+VM: xxG vsize, xxM framework vsize, xx(xx) swapins, xx(0) swapouts.
+Networks: packets: xx/xxM in, xx/xxM out. Disks: xx/xxG read, xx/xxG written.
+
+PID COMMAND %CPU TIME #TH #WQ #PORTS MEM PURG CMPRS PGRP PPID STATE BOOSTS %CPU_ME
+
+
+- Start top sorting processes by internal memory size (default order - process ID):
+    top -o mem
+
+- Start top sorting processes first by CPU, then by running time:
+    top -o cpu -O time
+
+- Start top displaying only processes owned by given user:
+    top -user user_name
+
+- Get help about interactive commands:
+    ?
+```
+
+### <span id = "curl">curl</span>
+
+```bash
+Transfers data from or to a server.
+Supports most protocols, including HTTP, FTP, and POP3.
+More information: <https://curl.haxx.se>.
+
+- Download the contents of an URL to a file:
+    curl http://example.com -o filename
+
+- Download a file, saving the output under the filename indicated by the URL:
+    curl -O http://example.com/filename
+
+- Download a file, following [L]ocation redirects, and automatically [C]ontinuing (resuming) a previous file transfer:
+    curl -O -L -C - http://example.com/filename
+
+- Send form-encoded data (POST request of type `application/x-www-form-urlencoded`). Use `-d @file_name` or `-d @'-'` to read from STDIN:
+    curl -d 'name=bob' http://example.com/form
+
+- Send a request with an extra header, using a custom HTTP method:
+    curl -H 'X-My-Header: 123' -X PUT http://example.com
+
+- Send data in JSON format, specifying the appropriate content-type header:
+    curl -d '{"name":"bob"}' -H 'Content-Type: application/json' http://example.com/users/1234
+
+- Pass a user name and password for server authentication:
+    curl -u myusername:mypassword http://example.com
+
+- Pass client certificate and key for a resource, skipping certificate validation:
+    curl --cert client.pem --key key.pem --insecure https://example.com
+```
