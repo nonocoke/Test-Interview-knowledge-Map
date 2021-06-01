@@ -38,6 +38,16 @@
 20. [查找描述信息中包含robot的电影对应的分类名称以及电影数目，而且还需要该分类对应电影数量>=5部 - like %xx%](#20)
 21. [使用join查询方式找出没有分类的电影id以及名称 - 处理相关table](#21)
 22. [使用子查询的方式找出属于Action分类的所有电影对应的title,description](#22)
+23. [字段名拼接 concat_ws](#23)
+24. [创建一个actor表 - create](#24)
+25. [MYSQL创建数据表的三种方法 - create](#25)
+26. [批量插入数据 - insert](#26)
+27. [批量插入数据，不使用replace操作 - insert ignore](#27)
+28. [对first_name创建唯一索引uniq_idx_firstname - unique / index](#28)
+29. [针对actor表创建视图actor_name_view - view as](#29)
+30. [查询emp_no为10005, 使用强制索引 - force index](#30)
+31. [新增列 - alter add](#31)
+32. [删除emp_no重复的记录，只保留最小的id对应的记录- delete](#32)
 
 
 
@@ -289,6 +299,133 @@ where f.film_id in (select fc.film_id
                     inner join film_category fc
                     on c.category_id=fc.category_id
                     where name="Action")
+```
+
+### <span id = "23">23. 将employees表的所有员工的last_name和first_name拼接起来作为Name - concat_ws</span>
+
+```sql
+select concat_ws(' ', last_name, first_name) as Name
+from employees
+```
+
+### <span id = "24">24. 创建一个actor表 - create</span>
+
+```sql
+-- 列表	         类型	     是否为NULL	  含义
+-- actor_id	    smallint(5)	not null	主键id
+-- first_name	varchar(45)	not null	名字
+-- last_name	varchar(45)	not null	姓氏
+-- last_update	date	    not null	日期
+
+
+CREATE TABLE actor(
+actor_id smallint(5) primary key,
+first_name varchar(45) not null,
+last_name varchar(45) not null,
+last_update date not null);
+```
+
+### <span id = "25">25. MYSQL创建数据表的三种方法 - create</span>
+
+```sql
+-- 请你创建一个actor_name表，并且将actor表中的所有first_name以及last_name导入该表.
+
+-- 常规创建
+create table if not exists 目标表
+-- 复制表格
+create 目标表 like 来源表
+-- 将table1的部分拿来创建table2
+create table if not exists actor_name
+(
+first_name varchar(45) not null,
+last_name varchar(45) not null
+)
+select first_name,last_name
+from actor
+```
+
+### <span id = "26">26. 批量插入数据 - insert</span>
+
+```sql
+
+insert into actor(actor_id, first_name, last_name, last_update)
+values(1,'PENELOPE','GUINESS','2021-02-15 12:34:33'),
+      (2,'NICK','WAHLBERG','2021-02-15 12:34:33');
+```
+
+### <span id = "27">27. 批量插入数据，不使用replace操作 - insert ignore</span>
+
+```sql
+-- 对于表actor插入如下数据,如果数据已经存在，请忽略(不支持使用replace操作)
+insert ignore into actor values("3","ED","CHASE","2006-02-15 12:34:33");
+```
+
+### <span id = "28">28. 对first_name创建唯一索引uniq_idx_firstname - unique / index</span>
+
+```sql
+
+CREATE UNIQUE INDEX uniq_idx_firstname on actor (first_name);
+CREATE INDEX idx_lastname ON actor (last_name);
+
+-- mysql
+-- 添加主键
+ALTER TABLE tbl_name ADD PRIMARY KEY (col_list);
+-- 该语句添加一个主键，这意味着索引值必须是唯一的，且不能为NULL。
+
+-- 添加唯一索引
+ALTER TABLE tbl_name ADD UNIQUE index_name (col_list);
+-- 这条语句创建索引的值必须是唯一的。
+
+-- 添加普通索引
+ALTER TABLE tbl_name ADD INDEX index_name (col_list);
+-- 添加普通索引，索引值可出现多次。
+
+-- 添加全文索引
+ALTER TABLE tbl_name ADD FULLTEXT index_name (col_list);
+-- 该语句指定了索引为 FULLTEXT ，用于全文索引。
+
+-- 删除索引的语法：
+DROP INDEX index_name ON tbl_name;
+-- 或者
+ALTER TABLE tbl_name DROP INDEX index_name；
+ALTER TABLE tbl_name DROP PRIMARY KEY;
+```
+
+### <span id = "29">29. 针对actor表创建视图actor_name_view - view as</span>
+
+```sql
+CREATE VIEW actor_name_view
+AS 
+SELECT first_name AS first_name_v, last_name AS last_name_v
+FROM actor;
+```
+
+### <span id = "30">30. 查询emp_no为10005, 使用强制索引 - force index</span>
+
+```sql
+select *
+from salaries
+force index (idx_emp_no)
+where emp_no=10005
+```
+
+### <span id = "31">31. 新增列 - alter add</span>
+
+```sql
+-- ALTER TABLE table_name ADD column_name datatype [after field];
+alter table actor
+add create_date datetime not null default "2020-10-01 00:00:00" after last_update;
+```
+
+### <span id = "32">32. 删除emp_no重复的记录，只保留最小的id对应的记录- delete</span>
+
+```sql
+DELETE FROM titles_test
+WHERE id NOT IN(
+    SELECT * FROM(
+    SELECT MIN(id)
+    FROM titles_test
+    GROUP BY emp_no) a);  -- 把得出的表重命名那就不是原表了
 ```
 
 ### 
