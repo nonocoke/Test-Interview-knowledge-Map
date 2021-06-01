@@ -1,5 +1,21 @@
 # 常用命令
 
+## 常用bash
+
+[sed](#sed)
+[awk](#awk)
+[cut](#cut)
+[sort](#sort)
+[uniq](#uniq)
+[grep](#grep)
+[tr](#tr)
+[wc](#wc)
+[netstat](#netstat)
+[free](#free)
+[ps](#ps)
+[top](#top)
+[curl](#curl)
+
 ## 常用脚本
 
 1. [获取文件行数](#1)
@@ -17,22 +33,6 @@
 13. [去掉所有包含span的句子](#13)
 14. [求平均值](#14)
 15. [去掉所有包含span的句子](#15)
-
-## 常用bash
-
-[sed](#sed)
-[awk](#awk)
-[cut](#cut)
-[sort](#sort)
-[uniq](#uniq)
-[grep](#grep)
-[tr](#tr)
-[wc](#wc)
-[netstat](#netstat)
-[free](#free)
-[ps](#ps)
-[top](#top)
-[curl](#curl)
 
 ### <span id = "1">1. 获取文件行数</span>
 
