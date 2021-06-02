@@ -48,6 +48,12 @@
 30. [查询emp_no为10005, 使用强制索引 - force index](#30)
 31. [新增列 - alter add](#31)
 32. [删除emp_no重复的记录，只保留最小的id对应的记录- delete](#32)
+33. [数据更新 - update [repalce]](#33)
+34. [将titles_test表名修改为titles_2017 - alter rename](#34)
+35. [将所有获取奖金的员工当前的薪水增加10% - update](#35)
+36. [分页查询employees表 - limit](#36)
+37. [使用含有关键字exists查找未分配具体部门的员工的所有信息 - select exists](#37)
+38. [每个人最近的登录日期 - select](#38)
 
 
 
@@ -107,6 +113,8 @@ on s.emp_no = d.emp_no
 -- 注意：因为聚合函数通过作用一组值而只返回一个单一值，因此，在SELECT语句中出现的字段要么为一个聚合函数的输入值，如COUNT(course)，要么为GROUP BY语句中指定的字段，要么是常数，否则会出错。
 -- 简而言之：使用GROUP BY子句时，SELECT子句中只能有聚合键、聚合函数、常数。
 select emp_no, count(emp_no) as t from salaries group by emp_no having t > 15
+
+select number from grade group by number having count(*)>=3
 ```
 
 ### <span id = "6">6. 找出所有员工当前薪水salary情况</span>
@@ -304,8 +312,9 @@ where f.film_id in (select fc.film_id
 ### <span id = "23">23. 将employees表的所有员工的last_name和first_name拼接起来作为Name - concat_ws</span>
 
 ```sql
-select concat_ws(' ', last_name, first_name) as Name
-from employees
+select concat_ws(' ', last_name, first_name) as Name from employees
+
+SELECT CONCAT(last_name,"'",first_name) FROM employees;
 ```
 
 ### <span id = "24">24. 创建一个actor表 - create</span>
@@ -426,6 +435,123 @@ WHERE id NOT IN(
     SELECT MIN(id)
     FROM titles_test
     GROUP BY emp_no) a);  -- 把得出的表重命名那就不是原表了
+```
+
+### <span id = "33">33. 数据更新 - update [replace]</span>
+
+```sql
+-- 基本的数据更新语法，UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
+update titles_test set to_date = null , from_date = '2001-01-01' where to_date = '9999-01-01'
+
+-- 表更新语句结构 UPDATE 表名 SET 字段 = REPLACE(字段，原值，变值) WHERE 过滤条件
+update titles_test set emp_no = replace(emp_no,10001,10005) where id = 5
+```
+
+### <span id = "34">34. 将titles_test表名修改为titles_2017 - alter</span>
+
+```sql
+-- ALTER TABLE 表名 RENAME TO/AS 新表名 更改表名语句结构
+ALTER TABLE titles_test RENAME TO titles_2017
+```
+
+### <span id = "34">34. 外键约束，其emp_no对应employees_test表的主键id - alter</span>
+
+```sql
+-- 创建外键语句结构：
+-- ALTER TABLE <表名>
+-- ADD CONSTRAINT FOREIGN KEY (<列名>)
+-- REFERENCES <关联表>（关联列）
+ALTER TABLE audit
+ADD CONSTRAINT FOREIGN KEY (emp_no)
+REFERENCES employees_test(id);
+```
+
+### <span id = "35">35. 将所有获取奖金的员工当前的薪水增加10% - update</span>
+
+```sql
+-- 1.连接查询（先join两张表）
+update salaries as s join emp_bonus as e on s.emp_no=e.emp_no
+set salary=salary*1.1
+where to_date='9999-01-01'
+
+-- 2. 子查询（两次select）
+update salaries
+set salary=salary*1.1
+where to_date='9999-01-01'
+    and salaries.emp_no in(select emp_no from emp_bonus)
+
+-- 比较：
+-- 推荐使用连接查询（JOIN）
+-- 连接查询不需要创建+销毁临时表，因此速度比子查询快。
+```
+
+### <span id = "36">36. 分页查询employees表 - limit</span>
+
+```sql
+SELECT *
+FROM employees
+LIMIT 5,5
+
+-- LIMIT 语句结构： LIMIT X,Y 
+-- Y ：返回几条记录
+-- X：从第几条记录开始返回（第一条记录序号为0，默认为0）
+```
+
+### <span id = "37">37. 使用含有关键字exists查找未分配具体部门的员工的所有信息 - select exists</span>
+
+```sql
+
+select * from employees e
+where not exists
+(select emp_no from dept_emp d where d.emp_no = e.emp_no);
+```
+
+### <span id = "38">38. 每个人最近的登录日期 - select</span>
+
+```sql
+
+select user_id, MAX(date) as d from login group by user_id order by user_id
+
+select user.name as u_n, client.name as c_n, login.date
+from login 
+join user on login.user_id=user.id
+join client on login.client_id=client.id
+where (login.user_id,login.date) in
+    (select user_id,max(date) from login group by login.user_id )
+order by user.name;
+
+-- 留存率（第一天登录的新用户并且第二天也登录的用户）/（总用户）
+select
+round(count(distinct user_id)*1.0 / (select count(distinct user_id) from login), 3)
+from login
+where (user_id, date) in
+    (select user_id, DATE_ADD(MIN(date),INTERVAL 1 DAY) from login group by user_id);
+
+-- 查询每个日期登录新用户个数
+-- 先得到所有日期表select distinct date from login;
+-- 然后左连接新用户首次登陆的日期表(select user_id, min(date) first_date from login group by user_id);
+-- 归类统计日期出现的次数.
+select a.date, count(b.user_id) new
+from (select distinct date from login) a
+left join (select user_id, min(date) first_date from login group by user_id) b on a.date=b.first_date 
+group by a.date order by a.date
+
+```
+
+```sql
+SELECT id, job, score
+FROM grade a
+WHERE score> (SELECT ROUND(AVG(score),3)
+              FROM grade b
+              WHERE a.job = b.job)
+ORDER BY a.id
+-- 
+select job ,
+       floor((sum(1)+1)/2) as start,
+       floor((sum(1)+2)/2) as end
+from grade
+group by job
+order by job
 ```
 
 ### 
