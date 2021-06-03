@@ -326,7 +326,7 @@ SELECT CONCAT(last_name,"'",first_name) FROM employees;
 -- last_name	varchar(45)	not null	姓氏
 -- last_update	date	    not null	日期
 
-
+-- CREATE TABLE table_name (column_name column_type);
 CREATE TABLE actor(
 actor_id smallint(5) primary key,
 first_name varchar(45) not null,
@@ -356,7 +356,7 @@ from actor
 ### <span id = "26">26. 批量插入数据 - insert</span>
 
 ```sql
-
+-- INSERT INTO table_name ( field1, field2,...fieldN ) VALUES ( value1, value2,...valueN ); 
 insert into actor(actor_id, first_name, last_name, last_update)
 values(1,'PENELOPE','GUINESS','2021-02-15 12:34:33'),
       (2,'NICK','WAHLBERG','2021-02-15 12:34:33');
