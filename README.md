@@ -24,6 +24,8 @@
 
 #### 3.1 python 常考基础
 
+[以下 python 常见问题及解答](./python/_py_basic.md)
+
 * 生成器与迭代器
 * python 运算符
 * 同步异步阻塞和非阻塞的理解
@@ -35,9 +37,7 @@
 * 深拷贝与浅拷贝
 * python的并发编程
 * python 垃圾回收
-* Python常用内置模块
-
-以上详见[python 常见问题](./python/_py_basic.md)
+* Python 常用内置模块
 
 #### 3.2 数据结构与算法
 
