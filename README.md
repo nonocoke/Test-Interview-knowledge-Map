@@ -11,6 +11,7 @@
 * [数据库/redis](#5)
 * [软件测试基础](#6)
 * [计算机基础知识](#7)
+* [剑指offer题解](https://github.com/ww-chn/yyds/tree/main/%E5%89%91%E6%8C%87offer/README.md)
 
 ### <span id = "1">1. 自我介绍</span>
 

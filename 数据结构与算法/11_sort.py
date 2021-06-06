@@ -184,7 +184,7 @@ def quick_sort_2(a: List[int]):
 
     return QuickSort_TwoWay(a, 0, len(a) - 1)
 
-#python 版本简易实现 但空间复杂度不是O(1)
+#python 版本简易实现
 def quickSort(self,nums):
     if not nums:
         return []
