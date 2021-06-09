@@ -33,12 +33,9 @@
 * select、poll、epoll 模型的区别
 * python 单例模式实现
 * With机制及如何实现
-* Range与xrange的异同
 * python参数传递: 传值与传引用
 * 深拷贝与浅拷贝
-* python的并发编程
-* python 垃圾回收
-* Python 常用内置模块
+* [python 垃圾回收](./python_gc.md)
 
 #### 3.2 数据结构与算法
 
