@@ -285,5 +285,5 @@ with 工作原理
 ## [12 python 垃圾回收](./python_gc.md)
 
 ## 13 python 部分基础知识
-![](../images/python_base_01.jpeg)
-![](../images/python_base_02.jpeg)
+![](../images/python_base_01.jpg)
+![](../images/python_base_02.jpg)
