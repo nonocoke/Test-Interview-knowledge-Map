@@ -662,7 +662,7 @@ import collections
 class Solution:
     # BFS  O(N)  |  O(N)
     def levelOrder(self, root: TreeNode) -> List[int]:
-        if nor root: return []
+        if not root: return []
         res, _queue = [], collections.queue()
         _queue.append(root)
         while _queue:
@@ -673,7 +673,7 @@ class Solution:
         return res
 
     def levelOrder_1(self, root: TreeNode) -> List[int]:
-        if nor root: return []
+        if not root: return []
         res, _queue = [], collections.queue()
         _queue.append(root)
         while _queue:
