@@ -282,7 +282,9 @@ with 工作原理
 * 浅拷贝(copy)：拷贝父对象，不会拷贝对象的内部的子对象 (如果是可变对象，拷贝的该对象的引用)
 * 深拷贝(deepcopy)： copy 模块的 deepcopy 方法，完全拷贝了父对象及其子对象
 
-## [12 python 垃圾回收](./python_gc.md)
+## 12 python 垃圾回收
+
+[传送门 - python 垃圾回收](./python_gc.md)
 
 ## 13 python 部分基础知识
 ![](../images/python_base_01.jpg)
