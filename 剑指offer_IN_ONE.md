@@ -763,6 +763,49 @@ class Solution:
         return self.head
 ```
 
+#### 37 序列化二叉树 (反序列化)
+
+请实现两个函数，分别用来序列化和反序列化二叉树。保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构
+
+```python3
+# 层序遍历后恢复
+import collections
+class Solution:
+    def serialize(self, root: TreeNode) -> str:
+        if not root: return "[]"
+        queue = collections.deque()
+        queue.append(root)
+        res = []
+        while queue:
+            node = queue.popleft()
+            if node:
+                res.append(str(node.val))
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                res.append("#")
+        return '[' + ','.join(res) + ']'
+
+    def deserialize(self, data: str) -> TreeNode:
+        if data == "[]": return
+        vals = data[1:-1].split(',')
+        i = 1
+        root = TreeNode(int(vals[0]))
+        queue = collections.deque()
+        queue.append(root)
+        while queue:
+            node = queue.popleft()
+            if vals[i] != "#":
+                node.left = TreeNode(int(vals[i]))
+                queue.append(node.left)
+            i += 1
+            if vals[i] != "#":
+                node.right = TreeNode(int(vals[i]))
+                queue.append(node.right)
+            i += 1
+        return root
+```
+
 #### 38 字符串的排列 (全排列)
 
 输入一个字符串，打印出该字符串中字符的所有排列。你可以以任意顺序返回这个字符串数组，但里面不能有重复元素
