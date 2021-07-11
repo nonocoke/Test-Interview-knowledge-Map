@@ -84,3 +84,38 @@ tip
 
     - 防重设计主要为了避免产生重复数据，对接口返回没有太多要求
     - 而幂等设计除了避免产生重复数据之外，还要求每次请求都返回一样的结果
+
+
+
+
+算法题
+
+1. [合并有序区间 lc 56](https://leetcode-cn.com/problems/merge-intervals/)
+    * sorted()，比较前一区间end、后一区间first
+
+2. 多边形内找出 10w 个不重复的点
+    * 射线法，如果测试点的两边点的个数都是奇数个则该测试点在多边形内
+
+3. 给定 3 个字符串，找出长度最长的两个并打印 (follow up: N个字符串找出最长的2个)
+    1. min/max/sorted
+    ```python3
+    _max = max(strs, key=len)
+    _max_2 = max(strs.remove(_max), key=len)
+    ```
+    2. [数组中 k大问题](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+ 
+4. 字符串(含数字)abc1123ca ，逆序打印每个字符出现的次数
+    1. 字典存储key: counts
+    2. 按 value 排序打印
+        - sorted(d.items(), key=lambda x: x[1], reverse=True)
+
+测试题
+
+1. 如何用 1个byte 测试三角形，并写出测试用例
+2. web-pay-bank，写出测试用例
+3. 测试支付接口
+
+sql
+
+1. left join
+2. group by having
