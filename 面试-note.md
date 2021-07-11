@@ -101,6 +101,9 @@ tip
     ```python3
     _max = max(strs, key=len)
     _max_2 = max(strs.remove(_max), key=len)
+
+    from collections import Counter
+    Counter(strs).most_common(2)
     ```
     2. [数组中 k大问题](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
  
