@@ -123,7 +123,7 @@ tip
                 for j in range(coin, amount + 1):
                     dp[j] += dp[j - coin]
             return dp[-1]
-```
+    ```
 
 测试题
 
@@ -135,3 +135,10 @@ sql
 
 1. left join
 2. group by having
+
+shell
+1. 输出出现的单词次数
+
+    ```bash
+    cat 1.txt | xargs -n1 | sort | uniq -c | grep abc | awk '{print $1}'
+    ```
