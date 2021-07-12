@@ -90,7 +90,7 @@ tip
 
 算法题
 
-1. [合并有序区间 lc 56](https://leetcode-cn.com/problems/merge-intervals/)
+1. [合并有序区间 lc56](https://leetcode-cn.com/problems/merge-intervals/)
     * sorted()，比较前一区间end、后一区间first
 
 2. 多边形内找出 10w 个不重复的点
@@ -101,16 +101,29 @@ tip
     ```python3
     _max = max(strs, key=len)
     _max_2 = max(strs.remove(_max), key=len)
-
-    from collections import Counter
-    Counter(strs).most_common(2)
     ```
     2. [数组中 k大问题](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
  
 4. 字符串(含数字)abc1123ca ，逆序打印每个字符出现的次数
+
+    ```python3
+    from collections import Counter
+    Counter(strs).most_common(2)
+    ```
     1. 字典存储key: counts
     2. 按 value 排序打印
         - sorted(d.items(), key=lambda x: x[1], reverse=True)
+
+5. [零钱兑换 II lc518](https://leetcode-cn.com/problems/coin-change-2/)
+    ```python3
+    class Solution:
+        def change(self, amount: int, coins: List[int]) -> int:
+            dp = [1] + [0] * amount
+            for coin in coins:
+                for j in range(coin, amount + 1):
+                    dp[j] += dp[j - coin]
+            return dp[-1]
+```
 
 测试题
 
