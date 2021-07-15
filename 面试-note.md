@@ -131,7 +131,7 @@ tip
 2. web-pay-bank，写出测试用例
 3. 测试支付接口
 
-sql
+mysql 
 
 1. left join
 2. group by having
