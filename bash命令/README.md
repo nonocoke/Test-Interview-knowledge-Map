@@ -138,7 +138,7 @@ awk '{if($0 != "") {print $0}}' README.md
 # 打印字母数小于8的单词
 
 # xargs 给其它命令传递参数的一个过滤器
-#       -n 多行输出 num [一行展示几个元素]
+#       -n 多行输出 num [几列]
 cat README.md | xargs -n3 | awk 'length($1)<8 {print $1}'
 
 # awk
